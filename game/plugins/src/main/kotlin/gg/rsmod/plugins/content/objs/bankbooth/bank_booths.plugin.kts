@@ -56,6 +56,58 @@ BOOTHS.forEach { booth ->
     }
 }
 
+//Adding the platinum tokens system
+//token variable is the Platinum Token Item number, don't confuse it with the tokensIn/Out vars in the code unless I remove
+val token = Items.PLATINUM_TOKEN_13204
+//money variable is the Coins item number.
+val money = Items.COINS_995
+//@TODO Finish the ItemMessageBoxes, and MAX VALUE doens't work, just takes the money and puts in no tokens.
+BOOTHS.forEach { booth ->
+    on_item_on_obj(obj = booth, item = money, lineOfSightDistance = -1) {
+        player.queue {
+            when (options("Yes", "No", title = "Exchange your coins for platinum tokens?")) {
+                1 -> {
+                    val maxcoins = player.inventory.getItemCount(money) //Get the amount of coins.
+                    val moduloMath = maxcoins % 1000 //This get's the remainder of coins if someone has over the divisible amount
+                    val mathcoins = maxcoins / 1000 //The simple formula for converting coins to platinum tokens.
+                    if (player.inventory.contains(money)) { //If you have coins, great!
+                        player.inventory.add(money, amount = moduloMath) //Order of operations,
+                        player.inventory.remove(money, amount = maxcoins) //Remove all the coins.
+                        player.inventory.add(token, amount = mathcoins) //This gives our mathed out coins from coins -> tokens to the player.
+                    }
+                    //Don't know how ever this would be called.
+                    else player.message("Unable to complete transaction...")
+                }
+                2 -> {
+
+                }
+                else -> null
+            }
+        }
+    }
+}
+
+BOOTHS.forEach { booth ->
+    on_item_on_obj(obj = booth, item = token, lineOfSightDistance = -1) {
+        player.queue {
+            when (options("Yes", "No", title = "Exchange your platinum tokens for coins?")) {
+                1 -> {
+                    val maxtoken = player.inventory.getItemCount(token)
+                    val ezMath = maxtoken * 1000
+                    if (player.inventory.contains(token)) {
+                        player.inventory.remove(token, amount = maxtoken)
+                        player.inventory.add(money, amount = ezMath)
+                    }
+                }
+                2 -> {
+                    //do nothing.
+                }
+            }
+        }
+}
+
+}
+
 fun open_collect(p: Player) {
     p.setInterfaceUnderlay(color = -1, transparency = -1)
     p.openInterface(interfaceId = 402, dest = InterfaceDestination.MAIN_SCREEN)

@@ -11,8 +11,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.message.impl.ResumePauseButtonMessage
 import gg.rsmod.plugins.api.ext.interfaceOptions
 
-val MAX = intArrayOf(
-        Items.MAX_CAPE_13342)
+val max = Items.MAX_CAPE_13342
 
 private val SOUNDAREA_ID = 200
 private val SOUNDAREA_RADIUS = 5
@@ -26,41 +25,36 @@ private val LOCATIONS = mapOf(
         "Crafting Guild" to Tile(2932, 3285)
 )
 
-arrayOf(Items.MAX_CAPE_13342).forEach { cape2 ->
-    on_equipment_option(Items.MAX_CAPE_13342, "Other Teleports") {
-        player.queue(TaskPriority.STRONG) {
-            optionsMenu(this)
-            when (interfaceOptions("1) Lumbridge", "2) Varrock",
-            "3) Falador", "4) Camelot","5) Seers' Village","6) Ardougne", title = "Select an Option")) {
-                0 -> player.teleport(Tile(3221, 3218), TeleportType.MAX)
-                1 -> player.teleport(Tile(3210, 3423), TeleportType.MAX)
-                2 -> player.teleport(Tile(2963, 3379), TeleportType.MAX)
-                3 -> player.teleport(Tile(2756, 3476), TeleportType.MAX)
-                4 -> player.teleport(Tile(3444, 3444), TeleportType.MAX) //Needs coords
-                5 -> player.teleport(Tile(2662, 3307), TeleportType.MAX)
-            }
-            player.closeInterface(InterfaceDestination.MAIN_SCREEN)
+on_equipment_option(Items.MAX_CAPE_13342, "Other Teleports") {
+    player.queue(TaskPriority.STRONG) {
+        optionsMenu(this)
+        when (interfaceOptions("1) Lumbridge", "2) Varrock", "3) Falador", "4) Camelot","5) Seers' Village","6) Ardougne", title = "Select an Option")) {
+            0 -> player.teleport(Tile(3221, 3218), TeleportType.MAX)
+            1 -> player.teleport(Tile(3210, 3423), TeleportType.MAX)
+            2 -> player.teleport(Tile(2963, 3379), TeleportType.MAX)
+            3 -> player.teleport(Tile(2756, 3476), TeleportType.MAX)
+            4 -> player.teleport(Tile(3444, 3444), TeleportType.MAX) //Needs coords
+            5 -> player.teleport(Tile(2662, 3307), TeleportType.MAX)
         }
+        player.closeInterface(InterfaceDestination.MAIN_SCREEN)
     }
 }
 
 // -- Teleports interface -- \\
-arrayOf(Items.MAX_CAPE_13342).forEach { cape ->
-    on_item_option(Items.MAX_CAPE_13342, "Teleports") {
-            player.queue(TaskPriority.STRONG) {
-                optionsMenu(this)
-                when (interfaceOptions("1) Lumbridge", "2) Varrock",
-                        "3) Falador", "4) Camelot", "5) Seers' Village", "6) Ardougne", title = "Select an Option")) {
-                    0 -> player.teleport(Tile(3221, 3218), TeleportType.MAX)
-                    1 -> player.teleport(Tile(3210, 3423), TeleportType.MAX)
-                    2 -> player.teleport(Tile(2963, 3379), TeleportType.MAX)
-                    3 -> player.teleport(Tile(2756, 3476), TeleportType.MAX)
-                    4 -> player.teleport(Tile(3444, 3444), TeleportType.MAX) //Needs coords
-                    5 -> player.teleport(Tile(2662, 3307), TeleportType.MAX)
-                }
-                player.closeInterface(InterfaceDestination.MAIN_SCREEN)
-            }
+on_item_option(Items.MAX_CAPE_13342, "Teleports") {
+    player.queue(TaskPriority.STRONG) {
+        optionsMenu(this)
+        when (interfaceOptions("1) Lumbridge", "2) Varrock",
+            "3) Falador", "4) Camelot", "5) Seers' Village", "6) Ardougne", title = "Select an Option")) {
+            0 -> player.teleport(Tile(3221, 3218), TeleportType.MAX)
+            1 -> player.teleport(Tile(3210, 3423), TeleportType.MAX)
+            2 -> player.teleport(Tile(2963, 3379), TeleportType.MAX)
+            3 -> player.teleport(Tile(2756, 3476), TeleportType.MAX)
+            4 -> player.teleport(Tile(3444, 3444), TeleportType.MAX) //Needs coords
+            5 -> player.teleport(Tile(2662, 3307), TeleportType.MAX)
         }
+        player.closeInterface(InterfaceDestination.MAIN_SCREEN)
+    }
 }
 
 on_button(interfaceId = 187, component = 3) {
@@ -90,19 +84,20 @@ suspend fun optionsMenu(it: QueueTask): Int = it.option("1) Lumbridge", "2) Varr
 
 
 // -- Features button -- \\
-arrayOf(Items.MAX_CAPE_13342).forEach { cape ->
-    on_item_option(Items.MAX_CAPE_13342, "Features") {
-        player.queue {
-            optionsMenu2(this)
-        }
+
+on_item_option(Items.MAX_CAPE_13342, "Features") {
+    player.queue {
+        optionsMenu2(this)
     }
-    on_equipment_option(Items.MAX_CAPE_13342, "Features") {
-        player.queue {
-            optionsMenu2(this)
-        }
+}
+on_equipment_option(Items.MAX_CAPE_13342, "Features") {
+    player.queue {
+        optionsMenu2(this)
     }
 }
 
+
+//Going to change this to spawn the items Pestle and Mortar, Mith grapple and crossbow, Toggle ROL, and toggle rol respawn.
 suspend fun QueueTask.option2(vararg options: String, title: String = "Max Cape Features"): Int {
     player.sendTempVarbit(5983, 1)
     player.runClientScript(2524, -1, -1)
@@ -125,18 +120,16 @@ suspend fun optionsMenu2(it: QueueTask): Int = it.option2("Free access to cyclop
         "Acts as a light source","10% increased chance of finding a bird's nest, also 10% chance of receiving an extra logs",
         "5% increased yield from herb patches (stacks with magical secateurs)")
 
-MAX.forEach { max5 ->
-    LOCATIONS.forEach { location, tile ->
-        on_equipment_option(max5, option = location) {
-            player.queue(TaskPriority.STRONG) {
-                player.teleport(tile)
-            }
+LOCATIONS.forEach { location, tile ->
+    on_equipment_option(max, option = location) {
+        player.queue(TaskPriority.STRONG) {
+            player.teleport(tile)
         }
     }
 }
 
 fun Player.teleport(endTile : Tile) {
-    if (canTeleport(TeleportType.MAX) && hasEquipped(EquipmentType.CAPE, *MAX)) {
+    if (canTeleport(TeleportType.MAX) && hasEquipped(EquipmentType.CAPE, max)) {
         world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
         teleport(endTile, TeleportType.MAX)
     }
